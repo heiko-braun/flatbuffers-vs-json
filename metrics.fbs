@@ -1,0 +1,15 @@
+// example IDL file
+
+namespace org.wildfly.metrics;
+
+table Metric {
+  name:string;
+  timestamp:long;
+  value:long;
+}
+      
+table MetricBatch {
+  metrics:[Metric];
+}  
+
+root_type MetricBatch;
