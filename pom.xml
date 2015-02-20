@@ -55,6 +55,7 @@
 
     <properties>
         <junit.version>4.11</junit.version>
+        <japex.version>1.2.4</japex.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -75,8 +76,25 @@
             <version>1.0.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
-    </dependencies>
 
+        <dependency>
+            <groupId>com.sun.japex</groupId>
+            <artifactId>japex</artifactId>
+            <version>${japex.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
 
     <repositories>
         <!-- Conventions are described in http://community.jboss.org/wiki/MavenGettingStarted-Developers -->
@@ -140,6 +158,44 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.sun.japex</groupId>
+                <artifactId>japex-maven-plugin</artifactId>
+                <version>${japex.version}</version>
+                <executions>
+                    <execution>
+                        <id>japex</id>
+                        <goals><goal>japex</goal></goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <japexConfig>
+                        <testSuite name="ParsingPerformance" xmlns="http://www.sun.com/japex/testSuite">
+                            <param name="japex.namedClassPath" value="maven.test.classpath"/>
+                            <param name="japex.resultUnit" value="ms"/>
+                            <param name="japex.warmupIterations" value="500"/>
+                            <param name="japex.runIterations" value="10000"/>
+                            <driver name="Flatbuffers">
+                                <param name="japex.driverClass" value="org.wildfly.metrics.FlatbufferWrite"/>
+                                <param name="description" value="Flatbuffer i/o performance"/>
+                            </driver>
+                            <driver name="Jason">
+                                <param name="japex.driverClass" value="org.wildfly.metrics.JsonWrite"/>
+                                <param name="description" value="Json i/o performance"/>
+                            </driver>
+                            <testCase name="test-one">
+                                <param name="batch.size" value="25"/>
+                            </testCase>
+                            <testCase name="test-two">
+                                <param name="batch.size" value="100"/>
+                            </testCase>
+                            <testCase name="test-three">
+                                <param name="batch.size" value="500"/>
+                            </testCase>
+                        </testSuite>
+                    </japexConfig>
                 </configuration>
             </plugin>
         </plugins>
