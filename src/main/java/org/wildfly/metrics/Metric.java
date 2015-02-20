@@ -18,9 +18,9 @@ public class Metric extends Table {
   public long value() { int o = __offset(8); return o != 0 ? bb.getLong(o + bb_pos) : 0; }
 
   public static int createMetric(FlatBufferBuilder builder,
-      int name,
-      long timestamp,
-      long value) {
+                                 int name,
+                                 long timestamp,
+                                 long value) {
     builder.startObject(3);
     Metric.addValue(builder, value);
     Metric.addTimestamp(builder, timestamp);

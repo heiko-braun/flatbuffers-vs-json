@@ -17,7 +17,7 @@ public class MetricBatch extends Table {
   public int metricsLength() { int o = __offset(4); return o != 0 ? __vector_len(o) : 0; }
 
   public static int createMetricBatch(FlatBufferBuilder builder,
-      int metrics) {
+                                      int metrics) {
     builder.startObject(1);
     MetricBatch.addMetrics(builder, metrics);
     return MetricBatch.endMetricBatch(builder);
