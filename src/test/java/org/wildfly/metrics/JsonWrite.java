@@ -6,6 +6,10 @@ import com.sun.japex.TestCase;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 /**
  * @author Heiko Braun
  * @since 20/02/15
@@ -13,18 +17,20 @@ import org.json.simple.JSONObject;
 public class JsonWrite extends JapexDriverBase {
 
 
+    private int numSamples;
+    private byte[] bytes;
+
     @Override
     public void prepare(TestCase testCase) {
         super.prepare(testCase);
-
-
+        numSamples = testCase.getIntParam("batch.size");
     }
 
     @Override
     public void run(TestCase testCase) {
         super.run(testCase);
 
-        int numSamples = testCase.getIntParam("batch.size");
+
         long start = System.currentTimeMillis();
         JSONObject batch = new JSONObject();
 
@@ -39,11 +45,28 @@ public class JsonWrite extends JapexDriverBase {
 
         batch.put("metrics", list);
 
-        byte[] bytes = batch.toJSONString().getBytes();
+        bytes = batch.toJSONString().getBytes();
 
         setLongParam(Constants.RESULT_VALUE, bytes.length);
         setLongParam(Constants.RESULT_TIME, System.currentTimeMillis()-start);
 
 
     }
+
+    /*@Override
+    public void finish() {
+        super.finish();                             /*@Override
+            public void finish() {
+                super.finish();
+
+                try {
+                    String fileName = System.getProperty("java.io.tmpdir") + "metrics-" + numSamples;
+                    Files.write(Paths.get(fileName), bytes);
+                    System.out.println(fileName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }*/
+
+
 }

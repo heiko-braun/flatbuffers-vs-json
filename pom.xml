@@ -177,13 +177,21 @@
                             <param name="japex.resultUnit" value="ms"/>
                             <param name="japex.warmupIterations" value="500"/>
                             <param name="japex.runIterations" value="10000"/>
-                            <driver name="Flatbuffers">
+                            <driver name="Flatbuffer Write">
                                 <param name="japex.driverClass" value="org.wildfly.metrics.FlatbufferWrite"/>
-                                <param name="description" value="Flatbuffer i/o performance"/>
+                                <param name="description" value="Flatbuffer write performance"/>
                             </driver>
-                            <driver name="Jason">
+                            <driver name="Flatbuffer Read">
+                                <param name="japex.driverClass" value="org.wildfly.metrics.FlatbufferRead"/>
+                                <param name="description" value="Flatbuffer read performance"/>
+                            </driver>
+                            <driver name="Json Write">
                                 <param name="japex.driverClass" value="org.wildfly.metrics.JsonWrite"/>
-                                <param name="description" value="Json i/o performance"/>
+                                <param name="description" value="Json write performance"/>
+                            </driver>
+                            <driver name="Json Read">
+                                <param name="japex.driverClass" value="org.wildfly.metrics.JsonRead"/>
+                                <param name="description" value="Json read performance"/>
                             </driver>
                             <testCase name="test-one">
                                 <param name="batch.size" value="25"/>
